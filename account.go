@@ -40,3 +40,9 @@ func SetFriendlyName(c *Client, name string) error {
 	_, err := c.readResponse(c.put(u, name))
 	return err
 }
+
+// https://members.nearlyfreespeech.net/wiki/API/AccountStatus
+func GetAccountStatus(c *Client) (string, error) {
+	u := fmt.Sprintf("/account/%s/status", c.accountId)
+	return c.readResponse(c.get(u))
+}

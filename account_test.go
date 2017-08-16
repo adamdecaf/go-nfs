@@ -1,6 +1,7 @@
 package nfs
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -47,4 +48,15 @@ func TestNFSAccount__friendlyName(t *testing.T) {
 	}
 
 	SetFriendlyName(testClient, friendlyName)
+}
+
+func TestNFSAccount__status(t *testing.T) {
+	s, err := GetAccountStatus(testClient)
+	if err != nil {
+		t.Fatalf("error - %s", err)
+	}
+
+	if s == "" || !strings.Contains(s, "Ok") {
+		t.Fatal("error - invalid nfs account status")
+	}
 }
