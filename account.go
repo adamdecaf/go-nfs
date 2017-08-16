@@ -1,7 +1,6 @@
 package nfs
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
 )
@@ -55,13 +54,5 @@ func GetAccountSites(c *Client) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	// Parse json array
-	var sites = make([]string, 0)
-	err = json.Unmarshal([]byte(resp), &sites)
-	if err != nil {
-		return nil, err
-	}
-
-	return sites, nil
+	return readResponseArray(resp)
 }
