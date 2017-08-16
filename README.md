@@ -12,6 +12,13 @@ go get github.com/adamdecaf/go-nfs
 
 ## Building / Testing
 
+You need the following environment variables set:
+
+- `NFS_ACCOUNT_ID`
+- `NFS_API_KEY`
+- `NFS_LOGIN`
+
+
 ```bash
 $ go get github.com/adamdecaf/go-nfs
 $ cd go-nfs
