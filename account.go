@@ -37,8 +37,7 @@ func AddBalanceWarning(c *Client, bal float32) error {
 	params := make(map[string]string, 0)
 	params["balance"] = fmt.Sprintf("%.2f", bal)
 
-	_, err := c.post(u, params)
-	return err
+	return c.checkErrors(c.post(u, params))
 }
 
 // https://members.nearlyfreespeech.net/wiki/API/AccountRemoveWarning
@@ -47,8 +46,7 @@ func RemoveBalanceWarning(c *Client, bal float32) error {
 	params := make(map[string]string, 0)
 	params["balance"] = fmt.Sprintf("%.2f", bal)
 
-	_, err := c.post(u, params)
-	return err
+	return c.checkErrors(c.post(u, params))
 }
 
 // https://members.nearlyfreespeech.net/wiki/API/AccountFriendlyName
@@ -58,8 +56,7 @@ func GetFriendlyName(c *Client) (string, error) {
 }
 func SetFriendlyName(c *Client, name string) error {
 	u := fmt.Sprintf("/account/%s/friendlyName", c.accountId)
-	_, err := c.readResponse(c.put(u, name))
-	return err
+	return c.checkErrors(c.put(u, name))
 }
 
 // https://members.nearlyfreespeech.net/wiki/API/AccountStatus

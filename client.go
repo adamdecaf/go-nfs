@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"crypto/sha1"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -41,6 +42,15 @@ func NewClientForAccount(accountId, apiKey, login string) *Client {
 		apiKey: apiKey,
 		login: login,
 	}
+}
+
+// Errors represented by the NFS api
+type Error struct {
+	Debug string `json:"debug"`
+	Error string `json:"error"`
+}
+func (e Error) Err() error {
+	return fmt.Errorf("error - %s, %s", e.Error, e.Debug)
 }
 
 // getAuthHeader returns the value half for a NFS auth header.
@@ -117,7 +127,7 @@ func (c Client) makeRequest(method, p string, body io.Reader) (*http.Response, e
 	return resp, nil
 }
 
-// readResponse is designed to be wrapped around a `makeRequest`, `get` or `put` call
+// readResponse is designed to be wrapped around a `makeRequest` or similar call
 // it returns a successful response as a string, but will propegate errors
 // from the http call or in reading the response
 func (c Client) readResponse(resp *http.Response, err error) (string, error) {
@@ -129,6 +139,11 @@ func (c Client) readResponse(resp *http.Response, err error) (string, error) {
 	}
 	defer resp.Body.Close()
 
+	err = c.checkErrors(resp, err)
+	if err != nil {
+		return "", err
+	}
+
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
@@ -136,6 +151,35 @@ func (c Client) readResponse(resp *http.Response, err error) (string, error) {
 
 	return string(b), nil
 
+}
+
+// checkErrors is designed to be wrapped around a `makeRequest` or similar call
+// it returns no error if no passed-in error was given and if the response json
+// contains no debug/error message
+// checkErrors does not modify the response body (except on failure)
+func (c Client) checkErrors(resp *http.Response, err error) error {
+	if err != nil {
+		if resp.Body != nil {
+			resp.Body.Close()
+		}
+		return err
+	}
+
+	if resp.StatusCode != 200 {
+		bs, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+
+		e := Error{}
+		err = json.Unmarshal(bs, &e)
+		if err != nil {
+			return err
+		}
+		return e.Err()
+	}
+
+	return nil
 }
 
 func generateSalt() (string, error) {
