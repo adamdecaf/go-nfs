@@ -1,13 +1,16 @@
 package nfs
 
 import (
+	"bytes"
 	"crypto/rand"
 	"crypto/sha1"
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"path"
 	"strings"
 	"time"
@@ -60,27 +63,45 @@ func (c Client) getAuthHeaderValue(requestUri, bodyHash string) (string, error) 
 }
 
 func (c Client) get(p string) (*http.Response, error) {
-	return c.makeRequest("GET", p, "")
+	return c.makeRequest("GET", p, strings.NewReader(""))
+}
+
+func (c Client) post(p string, params map[string]string) (*http.Response, error) {
+	data := url.Values{}
+	for k,v := range params {
+		data.Add(k, v)
+	}
+	return c.makeRequest("POST", p, strings.NewReader(data.Encode()))
 }
 
 func (c Client) put(p, body string) (*http.Response, error) {
-	return c.makeRequest("PUT", p, body)
+	return c.makeRequest("PUT", p, strings.NewReader(body))
 }
 
-func (c Client) makeRequest(method, p, body string) (*http.Response, error) {
-	authHeaderValue, err := c.getAuthHeaderValue(p, hashfn([]byte(body)))
+func (c Client) makeRequest(method, p string, body io.Reader) (*http.Response, error) {
+	bs, err := ioutil.ReadAll(body)
+	if err != nil {
+		return nil, err
+	}
+
+	authHeaderValue, err := c.getAuthHeaderValue(p, hashfn(bs))
 	if err != nil {
 		return nil, err
 	}
 
 	u := nfsApiScheme + path.Join(nfsApiHost, p)
-	req, err := http.NewRequest(method, u, strings.NewReader(body))
+	req, err := http.NewRequest(method, u, bytes.NewBuffer(bs))
 	if err != nil {
 		return nil, err
 	}
 
 	// Set the auth header
 	req.Header.Set(authHeaderKey, authHeaderValue)
+
+	// Content-type
+	if method == "POST" {
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	}
 
 	// Make the http req
 	resp, err := c.h.Do(req)

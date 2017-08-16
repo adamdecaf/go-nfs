@@ -30,6 +30,27 @@ func balanceRequest(c *Client, u string) (float32, error) {
 	return float32(f), err
 }
 
+
+// https://members.nearlyfreespeech.net/wiki/API/AccountAddWarning
+func AddBalanceWarning(c *Client, bal float32) error {
+	u := fmt.Sprintf("/account/%s/addWarning", c.accountId)
+	params := make(map[string]string, 0)
+	params["balance"] = fmt.Sprintf("%.2f", bal)
+
+	_, err := c.post(u, params)
+	return err
+}
+
+// https://members.nearlyfreespeech.net/wiki/API/AccountRemoveWarning
+func RemoveBalanceWarning(c *Client, bal float32) error {
+	u := fmt.Sprintf("/account/%s/removeWarning", c.accountId)
+	params := make(map[string]string, 0)
+	params["balance"] = fmt.Sprintf("%.2f", bal)
+
+	_, err := c.post(u, params)
+	return err
+}
+
 // https://members.nearlyfreespeech.net/wiki/API/AccountFriendlyName
 func GetFriendlyName(c *Client) (string, error) {
 	u := fmt.Sprintf("/account/%s/friendlyName", c.accountId)

@@ -10,6 +10,7 @@ var (
 	minBalance float32 = 0.01
 	friendlyName = "adam"
 	minSites = 0
+	balanceWarning float32 = 10.00
 )
 
 func TestNFSAccount__balance(t *testing.T) {
@@ -31,6 +32,18 @@ func TestNFSAccount__balanceHigh(t *testing.T) {
 
 	if bal < minBalance {
 		t.Fatal("error - nfs acct balance is low")
+	}
+}
+
+func TestNFSAccount__warnings(t *testing.T) {
+	err := AddBalanceWarning(testClient, balanceWarning)
+	if err != nil {
+		t.Fatalf("error adding balance warning - %s", err)
+	}
+
+	err = RemoveBalanceWarning(testClient, balanceWarning)
+	if err != nil {
+		t.Fatalf("error removing balance warning - %s", err)
 	}
 }
 
