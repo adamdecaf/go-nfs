@@ -167,13 +167,10 @@ func (c Client) checkErrors(resp *http.Response, err error) error {
 	}
 
 	if resp.StatusCode != 200 {
-		bs, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
+		dec := json.NewDecoder(resp.Body)
 
 		e := Error{}
-		err = json.Unmarshal(bs, &e)
+		err = dec.Decode(&e)
 		if err != nil {
 			return err
 		}
