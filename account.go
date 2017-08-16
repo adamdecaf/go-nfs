@@ -29,3 +29,14 @@ func balanceRequest(c *Client, u string) (float32, error) {
 
 	return float32(f), err
 }
+
+// https://members.nearlyfreespeech.net/wiki/API/AccountFriendlyName
+func GetFriendlyName(c *Client) (string, error) {
+	u := fmt.Sprintf("/account/%s/friendlyName", c.accountId)
+	return c.readResponse(c.get(u))
+}
+func SetFriendlyName(c *Client, name string) error {
+	u := fmt.Sprintf("/account/%s/friendlyName", c.accountId)
+	_, err := c.readResponse(c.put(u, name))
+	return err
+}
