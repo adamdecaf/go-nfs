@@ -7,9 +7,9 @@ import (
 
 // My answers/values, change these if you use your api keys
 var (
-	minBalance float32 = 0.01
-	friendlyName = "adam"
-	minSites = 0
+	minBalance     float32 = 0.01
+	friendlyName           = "adam"
+	minSites               = 0
 	balanceWarning float32 = 10.00
 )
 

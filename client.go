@@ -19,8 +19,8 @@ import (
 
 const (
 	authHeaderKey = "X-NFSN-Authentication"
-	nfsApiHost = "api.nearlyfreespeech.net"
-	nfsApiScheme = "https://"
+	nfsApiHost    = "api.nearlyfreespeech.net"
+	nfsApiScheme  = "https://"
 )
 
 type Client struct {
@@ -39,8 +39,8 @@ func NewClientForAccount(accountId, apiKey, login string) *Client {
 		h: http.DefaultClient,
 		// auth info
 		accountId: accountId,
-		apiKey: apiKey,
-		login: login,
+		apiKey:    apiKey,
+		login:     login,
 	}
 }
 
@@ -49,6 +49,7 @@ type Error struct {
 	Debug string `json:"debug"`
 	Error string `json:"error"`
 }
+
 func (e Error) Err() error {
 	return fmt.Errorf("error - %s, %s", e.Error, e.Debug)
 }
@@ -78,7 +79,7 @@ func (c Client) get(p string) (*http.Response, error) {
 
 func (c Client) post(p string, params map[string]string) (*http.Response, error) {
 	data := url.Values{}
-	for k,v := range params {
+	for k, v := range params {
 		data.Add(k, v)
 	}
 	return c.makeRequest("POST", p, strings.NewReader(data.Encode()))

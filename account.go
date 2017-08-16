@@ -30,7 +30,6 @@ func balanceRequest(c *Client, u string) (float32, error) {
 	return float32(f), err
 }
 
-
 // https://members.nearlyfreespeech.net/wiki/API/AccountAddWarning
 func AddBalanceWarning(c *Client, bal float32) error {
 	u := fmt.Sprintf("/account/%s/addWarning", c.accountId)
