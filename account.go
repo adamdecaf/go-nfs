@@ -1,6 +1,7 @@
 package nfs
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 )
@@ -45,4 +46,22 @@ func SetFriendlyName(c *Client, name string) error {
 func GetAccountStatus(c *Client) (string, error) {
 	u := fmt.Sprintf("/account/%s/status", c.accountId)
 	return c.readResponse(c.get(u))
+}
+
+// https://members.nearlyfreespeech.net/wiki/API/AccountSites
+func GetAccountSites(c *Client) ([]string, error) {
+	u := fmt.Sprintf("/account/%s/sites", c.accountId)
+	resp, err := c.readResponse(c.get(u))
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse json array
+	var sites = make([]string, 0)
+	err = json.Unmarshal([]byte(resp), &sites)
+	if err != nil {
+		return nil, err
+	}
+
+	return sites, nil
 }

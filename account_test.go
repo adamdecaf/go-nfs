@@ -9,6 +9,7 @@ import (
 var (
 	minBalance float32 = 0.01
 	friendlyName = "adam"
+	minSites = 0
 )
 
 func TestNFSAccount__balance(t *testing.T) {
@@ -58,5 +59,17 @@ func TestNFSAccount__status(t *testing.T) {
 
 	if s == "" || !strings.Contains(s, "Ok") {
 		t.Fatal("error - invalid nfs account status")
+	}
+}
+
+func TestNFSAccount__sites(t *testing.T) {
+	sites, err := GetAccountSites(testClient)
+	if err != nil {
+		t.Fatalf("error - %s", err)
+	}
+
+	// TODO(adam): When I have sites, set len(sites) > 1 check
+	if len(sites) < minSites {
+		t.Fatal("error - not enough sites listed")
 	}
 }
