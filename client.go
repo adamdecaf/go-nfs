@@ -26,7 +26,11 @@ type Client struct {
 	accountId, apiKey, login string
 }
 
-func NewClient(accountId, apiKey, login string) *Client {
+func NewClient(apiKey, login string) *Client {
+	return NewClientForAccount("", apiKey, login)
+}
+
+func NewClientForAccount(accountId, apiKey, login string) *Client {
 	return &Client{
 		h: http.DefaultClient,
 		// auth info

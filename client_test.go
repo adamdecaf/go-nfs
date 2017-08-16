@@ -17,5 +17,5 @@ func init() {
 		panic("error - no NFS_* env variables set")
 	}
 
-	testClient = NewClient(accountId, apiKey, login)
+	testClient = NewClientForAccount(accountId, apiKey, login)
 }
