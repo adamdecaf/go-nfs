@@ -13,3 +13,13 @@ func TestNFSMember__accounts(t *testing.T) {
 		t.Fatal("no accounts for member")
 	}
 }
+
+func TestNFSMember__sites(t *testing.T) {
+	sites, err := GetMemberSites(testClient)
+	if err != nil {
+		t.Fatalf("error - %s", err)
+	}
+	if len(sites) < minSites {
+		t.Fatal("not enough sites member")
+	}
+}
