@@ -19,3 +19,14 @@ func TestNFSAccount__balance(t *testing.T) {
 		t.Fatal("error - nfs acct balance is low")
 	}
 }
+
+func TestNFSAccount__balanceHigh(t *testing.T) {
+	bal, err := GetAccountBalanceHighest(testClient)
+	if err != nil {
+		t.Fatalf("error - %s", err)
+	}
+
+	if bal < minBalance {
+		t.Fatal("error - nfs acct balance is low")
+	}
+}
