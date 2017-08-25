@@ -119,7 +119,7 @@ func (c Client) makeRequest(method, p string, body io.Reader) (*http.Response, e
 
 	// Only close response body on errors, otherwise let clients close
 	if err != nil {
-		if resp.Body != nil {
+		if resp != nil && resp.Body != nil {
 			resp.Body.Close()
 		}
 		return nil, err
@@ -133,7 +133,7 @@ func (c Client) makeRequest(method, p string, body io.Reader) (*http.Response, e
 // from the http call or in reading the response
 func (c Client) readResponse(resp *http.Response, err error) (string, error) {
 	if err != nil {
-		if resp.Body != nil {
+		if resp != nil && resp.Body != nil {
 			resp.Body.Close()
 		}
 		return "", err
@@ -160,7 +160,7 @@ func (c Client) readResponse(resp *http.Response, err error) (string, error) {
 // checkErrors does not modify the response body (except on failure)
 func (c Client) checkErrors(resp *http.Response, err error) error {
 	if err != nil {
-		if resp.Body != nil {
+		if resp != nil && resp.Body != nil {
 			resp.Body.Close()
 		}
 		return err
