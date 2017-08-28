@@ -1,8 +1,10 @@
 package nfs
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 // https://members.nearlyfreespeech.net/wiki/API/AccountBalance
@@ -59,9 +61,20 @@ func SetFriendlyName(c *Client, name string) error {
 }
 
 // https://members.nearlyfreespeech.net/wiki/API/AccountStatus
+type accountStatus struct {
+	Status string `json:"status"`
+}
 func GetAccountStatus(c *Client) (string, error) {
 	u := fmt.Sprintf("/account/%s/status", c.accountId)
-	return c.readResponse(c.get(u))
+	s, err := c.readResponse(c.get(u))
+
+	d := json.NewDecoder(strings.NewReader(s))
+	var st accountStatus
+	err = d.Decode(&st)
+	if err != nil {
+		return "", err
+	}
+	return st.Status, nil
 }
 
 // https://members.nearlyfreespeech.net/wiki/API/AccountSites

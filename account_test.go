@@ -1,7 +1,6 @@
 package nfs
 
 import (
-	"strings"
 	"testing"
 )
 
@@ -70,8 +69,8 @@ func TestNFSAccount__status(t *testing.T) {
 		t.Fatalf("error - %s", err)
 	}
 
-	if s == "" || !strings.Contains(s, "Ok") {
-		t.Fatal("error - invalid nfs account status")
+	if s != "Ok" {
+		t.Fatalf("error - account status != Ok, got %s", s)
 	}
 }
 
