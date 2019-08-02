@@ -22,3 +22,8 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# Environment variables and VSCode workspace file
+*.env
+*.code-workspace
+.vscode
