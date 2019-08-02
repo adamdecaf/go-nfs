@@ -48,7 +48,7 @@ func NewClientForAccount(accountId, apiKey, login string) *Client {
 	}
 }
 
-// Errors represented by the NFS api
+//Error represented by the NFS api
 type Error struct {
 	Debug string `json:"debug"`
 	Error string `json:"error"`

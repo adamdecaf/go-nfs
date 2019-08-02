@@ -8,7 +8,7 @@ import (
 	"fmt"
 )
 
-// https://members.nearlyfreespeech.net/wiki/API/MemberAccounts
+//GetMemberAccounts https://members.nearlyfreespeech.net/wiki/API/MemberAccounts
 func GetMemberAccounts(c *Client) ([]string, error) {
 	u := fmt.Sprintf("/member/%s/accounts", c.login)
 	resp, err := c.readResponse(c.get(u))
@@ -18,7 +18,7 @@ func GetMemberAccounts(c *Client) ([]string, error) {
 	return readResponseArray(resp)
 }
 
-// https://members.nearlyfreespeech.net/wiki/API/MemberSites
+//GetMemberSites https://members.nearlyfreespeech.net/wiki/API/MemberSites
 func GetMemberSites(c *Client) ([]string, error) {
 	u := fmt.Sprintf("/member/%s/sites", c.login)
 	resp, err := c.readResponse(c.get(u))
