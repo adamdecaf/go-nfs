@@ -68,6 +68,7 @@ func SetFriendlyName(c *Client, name string) error {
 type accountStatus struct {
 	Status string `json:"status"`
 }
+
 func GetAccountStatus(c *Client) (string, error) {
 	u := fmt.Sprintf("/account/%s/status", c.accountId)
 	s, err := c.readResponse(c.get(u))

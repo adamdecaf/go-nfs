@@ -17,6 +17,7 @@ var (
 )
 
 func TestNFSAccount__balance(t *testing.T) {
+	testClient := createTestClient(t)
 	bal, err := GetAccountBalance(testClient)
 	if err != nil {
 		t.Fatalf("error - %s", err)
@@ -28,6 +29,7 @@ func TestNFSAccount__balance(t *testing.T) {
 }
 
 func TestNFSAccount__balanceHigh(t *testing.T) {
+	testClient := createTestClient(t)
 	bal, err := GetAccountBalanceHighest(testClient)
 	if err != nil {
 		t.Fatalf("error - %s", err)
@@ -39,6 +41,7 @@ func TestNFSAccount__balanceHigh(t *testing.T) {
 }
 
 func TestNFSAccount__warnings(t *testing.T) {
+	testClient := createTestClient(t)
 	err := AddBalanceWarning(testClient, balanceWarning)
 	if err != nil {
 		t.Fatalf("error adding balance warning - %s", err)
@@ -51,6 +54,7 @@ func TestNFSAccount__warnings(t *testing.T) {
 }
 
 func TestNFSAccount__friendlyName(t *testing.T) {
+	testClient := createTestClient(t)
 	fn, err := GetFriendlyName(testClient)
 	if err != nil {
 		t.Fatalf("error - %s", err)
@@ -68,6 +72,7 @@ func TestNFSAccount__friendlyName(t *testing.T) {
 }
 
 func TestNFSAccount__status(t *testing.T) {
+	testClient := createTestClient(t)
 	s, err := GetAccountStatus(testClient)
 	if err != nil {
 		t.Fatalf("error - %s", err)
@@ -79,6 +84,7 @@ func TestNFSAccount__status(t *testing.T) {
 }
 
 func TestNFSAccount__sites(t *testing.T) {
+	testClient := createTestClient(t)
 	sites, err := GetAccountSites(testClient)
 	if err != nil {
 		t.Fatalf("error - %s", err)

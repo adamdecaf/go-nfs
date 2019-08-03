@@ -9,6 +9,7 @@ import (
 )
 
 func TestNFSMember__accounts(t *testing.T) {
+	testClient := createTestClient(t)
 	acts, err := GetMemberAccounts(testClient)
 	if err != nil {
 		t.Fatalf("error - %s", err)
@@ -19,6 +20,7 @@ func TestNFSMember__accounts(t *testing.T) {
 }
 
 func TestNFSMember__sites(t *testing.T) {
+	testClient := createTestClient(t)
 	sites, err := GetMemberSites(testClient)
 	if err != nil {
 		t.Fatalf("error - %s", err)

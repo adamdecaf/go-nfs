@@ -6,20 +6,17 @@ package nfs
 
 import (
 	"os"
+	"testing"
 )
 
-var (
-	testClient *Client
-)
-
-func init() {
+func createTestClient(t *testing.T) *Client {
 	accountId := os.Getenv("NFS_ACCOUNT_ID")
 	apiKey := os.Getenv("NFS_API_KEY")
 	login := os.Getenv("NFS_LOGIN")
 
 	if (accountId == "" || apiKey == "") || login == "" {
-		panic("error - no NFS_* env variables set")
+		t.Skip("error - no NFS_* env variables set")
 	}
 
-	testClient = NewClientForAccount(accountId, apiKey, login)
+	return NewClientForAccount(accountId, apiKey, login)
 }
