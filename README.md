@@ -25,3 +25,7 @@ $ cd go-nfs
 $ go build .
 $ go test -v .
 ```
+
+## License
+
+Apache License 2.0 See [LICENSE](LICENSE) for details.
