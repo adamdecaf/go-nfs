@@ -11,12 +11,12 @@ import (
 	"strings"
 )
 
-// https://members.nearlyfreespeech.net/wiki/API/AccountBalance
+//GetAccountBalance https://members.nearlyfreespeech.net/wiki/API/AccountBalance
 func GetAccountBalance(c *Client) (float32, error) {
 	return balanceRequest(c, fmt.Sprintf("/account/%s/balance", c.accountId))
 }
 
-// https://members.nearlyfreespeech.net/wiki/API/AccountBalanceHigh
+//GetAccountBalanceHighest https://members.nearlyfreespeech.net/wiki/API/AccountBalanceHigh
 func GetAccountBalanceHighest(c *Client) (float32, error) {
 	return balanceRequest(c, fmt.Sprintf("/account/%s/balanceHigh", c.accountId))
 }
@@ -36,7 +36,7 @@ func balanceRequest(c *Client, u string) (float32, error) {
 	return float32(f), err
 }
 
-// https://members.nearlyfreespeech.net/wiki/API/AccountAddWarning
+//AddBalanceWarning https://members.nearlyfreespeech.net/wiki/API/AccountAddWarning
 func AddBalanceWarning(c *Client, bal float32) error {
 	u := fmt.Sprintf("/account/%s/addWarning", c.accountId)
 	params := make(map[string]string)
@@ -45,7 +45,7 @@ func AddBalanceWarning(c *Client, bal float32) error {
 	return c.checkErrors(c.post(u, params))
 }
 
-// https://members.nearlyfreespeech.net/wiki/API/AccountRemoveWarning
+//RemoveBalanceWarning https://members.nearlyfreespeech.net/wiki/API/AccountRemoveWarning
 func RemoveBalanceWarning(c *Client, bal float32) error {
 	u := fmt.Sprintf("/account/%s/removeWarning", c.accountId)
 	params := make(map[string]string)
@@ -54,7 +54,7 @@ func RemoveBalanceWarning(c *Client, bal float32) error {
 	return c.checkErrors(c.post(u, params))
 }
 
-// https://members.nearlyfreespeech.net/wiki/API/AccountFriendlyName
+//GetFriendlyName https://members.nearlyfreespeech.net/wiki/API/AccountFriendlyName
 func GetFriendlyName(c *Client) (string, error) {
 	u := fmt.Sprintf("/account/%s/friendlyName", c.accountId)
 	return c.readResponse(c.get(u))
