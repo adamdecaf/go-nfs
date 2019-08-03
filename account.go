@@ -39,7 +39,7 @@ func balanceRequest(c *Client, u string) (float32, error) {
 // https://members.nearlyfreespeech.net/wiki/API/AccountAddWarning
 func AddBalanceWarning(c *Client, bal float32) error {
 	u := fmt.Sprintf("/account/%s/addWarning", c.accountId)
-	params := make(map[string]string, 0)
+	params := make(map[string]string)
 	params["balance"] = fmt.Sprintf("%.2f", bal)
 
 	return c.checkErrors(c.post(u, params))
@@ -48,7 +48,7 @@ func AddBalanceWarning(c *Client, bal float32) error {
 // https://members.nearlyfreespeech.net/wiki/API/AccountRemoveWarning
 func RemoveBalanceWarning(c *Client, bal float32) error {
 	u := fmt.Sprintf("/account/%s/removeWarning", c.accountId)
-	params := make(map[string]string, 0)
+	params := make(map[string]string)
 	params["balance"] = fmt.Sprintf("%.2f", bal)
 
 	return c.checkErrors(c.post(u, params))
@@ -72,6 +72,9 @@ type accountStatus struct {
 func GetAccountStatus(c *Client) (string, error) {
 	u := fmt.Sprintf("/account/%s/status", c.accountId)
 	s, err := c.readResponse(c.get(u))
+	if err != nil {
+		return "", err
+	}
 
 	d := json.NewDecoder(strings.NewReader(s))
 	var st accountStatus
