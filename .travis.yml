@@ -1,0 +1,32 @@
+language: go
+sudo: true
+
+matrix:
+  include:
+  - os: linux
+    go: 1.12.x
+    cache:
+      directories:
+      - "/home/travis/.cache/go-build"
+  - os: linux
+    go: master
+  - os: osx
+    go: 1.12.x
+    cache:
+      directories:
+      - "/Users/travis/Library/Caches/go-build"
+env:
+  matrix:
+    - GO111MODULE=on
+before_install:
+  - go get -u github.com/client9/misspell/cmd/misspell
+  - go get -u golang.org/x/lint/golint
+  - go get honnef.co/go/tools/cmd/staticcheck
+before_script:
+  - GOFILES=$(find . -type f -name '*.go' | grep -v vendor)
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then test -z $(gofmt -s -l $GOFILES); fi
+  - go test ./... -race
+  - misspell -error -locale US $GOFILES
+  - golint -set_exit_status $GOFILES
+  - staticcheck ./...
