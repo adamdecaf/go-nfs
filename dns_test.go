@@ -12,6 +12,8 @@ var (
 
 func TestDNS_ListRecords(t *testing.T) {
 	p := make(map[string]string)
+
+	testClient := createTestClient(t)
 	records, err := GetDNSRecords(testClient, domain, p)
 	if err != nil {
 		t.Fatalf("error - %s", err)
@@ -25,6 +27,7 @@ func TestDNS_AddRecord(t *testing.T) {
 		"type": "TXT",
 		"data": "TXT Record For Addition",
 	}
+	testClient := createTestClient(t)
 	records, err := SetDNSRecord(testClient, domain, p)
 	if err != nil {
 		t.Fatalf("error - %s", err)
@@ -38,6 +41,7 @@ func TestDNS_RemoveRecord(t *testing.T) {
 		"type": "TXT",
 		"data": "TXT Record For Removal",
 	}
+	testClient := createTestClient(t)
 	records, err := RemoveDNSRecord(testClient, domain, p)
 	if err != nil {
 		t.Fatalf("error - %s", err)
